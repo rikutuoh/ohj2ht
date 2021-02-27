@@ -1,0 +1,135 @@
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Ralli                    | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        |                                      |
+|                                      |                                      |
+| - Sisältää tiedot nimestä,           |                                      |
+|   paikasta ja alku- ja               |                                      |
+|   loppupäivämäärästä                 |                                      |
+|                                      |                                      |
+| - Osaa muuttaa tiedostosta           |                                      |
+|   saatavan merkkijonon olion         |                                      |
+|   tiedoiksi                          |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Rallit                   | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        | - Ralli                              |
+|                                      |                                      |
+| - Hakee tiedot tiedostosta           |                                      |
+|                                      |                                      |
+| - Osaa kirjoittaa tiedostoon         |                                      |
+|   tiedot                             |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Erikoiskoe               | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        |                                      |
+|                                      |                                      |
+| - Sisältää tiedot nimestä,           |                                      |
+|   pituudesta ja päivämäärästä        |                                      |
+|                                      |                                      |
+| - Osaa muuttaa tiedostosta           |                                      |
+|   saatavan merkkijonon olion         |                                      |
+|   tiedoiksi                          |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Erikoiskokeet            | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        | - Erikoiskoe                         |
+|                                      |                                      |
+| - Hakee tiedot tiedostosta           |                                      |
+|                                      |                                      |
+| - Osaa kirjoittaa tiedostoon         |                                      |
+|   tiedot                             |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Osallistuja              | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        |                                      |
+|                                      |                                      |
+| - Sisältää tiedot kuljettajan ja     |                                      |
+|   kartturin nimestä, tallista ja     |                                      |
+|   autosta                            |                                      |
+|                                      |                                      |
+| - Osaa muuttaa tiedostosta           |                                      |
+|   saatavan merkkijonon olion         |                                      |
+|   tiedoiksi                          |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Osallistujat             | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        | - Osallistuja                        |
+|                                      |                                      |
+| - Hakee tiedot tiedostosta           |                                      |
+|                                      |                                      |
+| - Osaa kirjoittaa tiedostoon         |                                      |
+|   tiedot                             |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Aika                     | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        |                                      |
+|                                      |                                      |
+| - Sisältää tiedon ajasta,            |                                      |
+|   kuljettajasta ja erikoiskokeesta   |                                      |
+|                                      |                                      |
+| - Osaa muuttaa tiedostosta           |                                      |
+|   saatavan merkkijonon olion         |                                      |
+|   tiedoiksi                          |                                      |
+|                                      |                                      |
+| - Osaa muuttaa merkkijonon oikeaan   |                                      |
+|   muotoon                            |                                      |
+|                                      |                                      |
+| - Osaa muuttaa oikean muodon         |                                      |
+|   merkkijonoksi                      |                                      |
+|                                      |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Ajat                     | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        | - Aika                               |
+|                                      |                                      |
+| - Hakee tiedot tiedostosta           |                                      |
+|                                      |                                      |
+| - Osaa kirjoittaa tiedostoon         |                                      |
+|   tiedot                             |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Rekisteri                | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        | - Rallit                             |
+|                                      |                                      |
+| - Osaa hakea ralliin kuuluvat        | - Erikoiskokeet                      |
+|   erikoiskokeet ja tietyn            |                                      |
+|   osallistujan ajan tietyllä         | - Osallistujat                       |
+|   erikoiskokeella                    |                                      |
+|                                      | - Ajat                               |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
++--------------------------------------+--------------------------------------+
+| Luokan nimi:Naytto                   | Avustajat:                           |
++--------------------------------------+--------------------------------------+
+| Vastuualueet:                        |                                      |
+|                                      | - Rekisteri                          |
+| - Näyttää rekisteristä saatavat      |                                      |
+|   tideot                             |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+

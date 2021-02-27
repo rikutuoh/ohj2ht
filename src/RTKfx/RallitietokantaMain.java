@@ -18,7 +18,7 @@ public class RallitietokantaMain extends Application {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("RallitietokantaGUIView.fxml"));
             final Pane root = ldr.load();
-            //final RallitietokantaGUIController rallitietokantaCtrl = (RallitietokantaGUIController) ldr.getController();
+            // final RallitietokantaGUIController rallitietokantaCtrl = (RallitietokantaGUIController) ldr.getController();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("rallitietokanta.css").toExternalForm());
             primaryStage.setScene(scene);
@@ -30,7 +30,7 @@ public class RallitietokantaMain extends Application {
     }
 
     /**
-     * @param args Ei k‰ytˆss‰
+     * @param args Ei k√§yt√∂ss√§
      */
     public static void main(String[] args) {
         launch(args);
