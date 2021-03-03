@@ -9,6 +9,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -53,10 +55,16 @@
       </VBox>
    </left>
    <center>
-      <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.5146396396396397" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <VBox>
                <children>
+                  <ToolBar prefHeight="40.0" prefWidth="200.0">
+                    <items>
+                        <ToggleButton mnemonicParsing="false" text="Kaikki" />
+                        <TextField prefHeight="25.0" prefWidth="290.0" text="Hae..." translateX="90.0" />
+                    </items>
+                  </ToolBar>
                   <TableView fx:id="tableviewkuski" onMouseClicked="#kuskiValittu" prefHeight="720.0" prefWidth="471.0">
                     <columns>
                         <TableColumn prefWidth="29.0" text="#" />
