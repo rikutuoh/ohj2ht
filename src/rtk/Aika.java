@@ -1,15 +1,72 @@
 package rtk;
 
+/**
+ * Aika-luokka
+ * @author rikut
+ * @version 29.3.2021
+ */
 public class Aika {
 	
-	private int value;
+	private int id, value, osId, ekId;
 	
+	/**
+	 * Muodostaja aikaoliolle, missä annetaan oikeassa muodossa oleva aika
+	 * @param s Aika muodossa mm,ss.cc, missä cc tarkoittaa sekunnin sadasosia
+	 */
 	public Aika(String s) {
 		this.value = parseToInt(s);
 	}
 	
+	
+	/**
+	 * Muodostaja aikaoliolle missä annetaan aika millisekunteina
+	 * @param value Aika millisekunteina
+	 */
 	public Aika(int value) {
 		this.value = value;
+	}
+	
+	/**
+	 * Muodostaja aikaoliolle, missä annetaan kaikki olion tiedot
+	 * @param id Aikaolion id
+	 * @param ekId Ajalle kuuluvan erikoiskokeen id
+	 * @param osId Ajalle kuuluvan osallistujan id
+	 * @param aika Aika millisekunteina
+	 */
+	public Aika(int id, int ekId, int osId, int aika) {
+		this.id = id; this.ekId = ekId; this.osId = osId; this.value = aika;
+	}
+	
+	/**
+	 * Antaa ajalle kuuluvan erikoiskokeen id:n
+	 * @return erikoiskokeen id
+	 */
+	public int getEkId() {
+		return ekId;
+	}
+	
+	/**
+	 * Antaa ajalle kuuluvan osallistujan id:n
+	 * @return osallistujan id
+	 */
+	public int getOsId() {
+		return osId;
+	}
+	
+	/**
+	 * Palauttaa ajan id:n
+	 * @return id
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * Asettaa ajalle id:n
+	 * @param id asetettava id
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	/**
@@ -18,8 +75,20 @@ public class Aika {
 	 * @return aikaolio
 	 */
 	public static Aika parseToAika(String s) {
-
-		return new Aika(parseToInt(s));
+		
+		String[] sArr = s.split("\\|");
+		for (int i = 0; i < sArr.length; i++) sArr[i] = sArr[i].trim();
+		Aika aika = new Aika(Integer.parseInt(sArr[0]), Integer.parseInt(sArr[1]), Integer.parseInt(sArr[2]), Integer.parseInt(sArr[3]));
+		
+		return aika;
+	}
+	
+	/**
+	 * Palauttaa olion tiedot tiedostoon tallennettavassa muodossa
+	 * @return olion tiedot tiedostoon tallennettavassa muodossa
+	 */
+	public String tiedostomuotoon() {
+		return String.format("%-4d", id) + "|" + String.format("%-7d", ekId) + "|" + String.format("%-11d", osId) + "|" + String.format("%-11d", value) + "|";
 	}
 	
 	/**
@@ -41,7 +110,12 @@ public class Aika {
 		return Integer.parseInt(sArr[0]) * 60000 + Integer.parseInt(sArr[1])*1000 + Integer.parseInt(sArr[2])*10;
 	}
 	
-	
+	/**
+	 * Palauttaa annetun ajan millisekunteina oikeassa 
+	 * muodossa mm,ss.cc, missä cc tarkoittaa sekunnin sadasosia
+	 * @param value Aika millisekunteina
+	 * @return Aika muodossa mm,ss.cc, missä cc tarkoittaa sekunnin sadasosia
+	 */
 	public static String toString(int value) {
 		
 		int ms, s, m;
@@ -54,6 +128,11 @@ public class Aika {
 		return String.format("%02d", m) + "." + String.format("%02d", s) +","+ String.format("%02d", ms/10);
 	}
 	
+	/**
+	 * Palauttaa olion ajan millisekunteina oikeassa 
+	 * muodossa mm,ss.cc, missä cc tarkoittaa sekunnin sadasosia
+	 * @return Aika muodossa mm,ss.cc, missä cc tarkoittaa sekunnin sadasosia
+	 */
 	public String toString() {
 		
 		return toString(value);

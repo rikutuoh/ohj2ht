@@ -1,18 +1,24 @@
 package RTKfx;
 
-import java.util.Arrays;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import rtk.*;
 
+/**
+ * Käyttöliittymän ohjainluokka
+ * @author rikut
+ * @version 29.3.2021
+ */
 public class RallitietokantaGUIController {
 
     @FXML private ListView<Ralli> listViewRalli;
     @FXML private ListView<Erikoiskoe> listViewEk;
     @FXML private TableView<Osallistuja> tableviewkuski; 
+    @FXML private TableColumn<Osallistuja, Integer> tableCKuskiId;
     @FXML private TableColumn<Osallistuja, String> tableCKuskiNimi;
     @FXML private TableColumn<Osallistuja, String> tableCKuskiAika;
     @FXML private TableColumn<Osallistuja, String> tableCKuskiTalli;
@@ -20,14 +26,254 @@ public class RallitietokantaGUIController {
     @FXML private TextField kartturiNimiField;
     @FXML private TextField kuskiTalliField;
     @FXML private TextField kuskiAutoField;
+    @FXML private ToggleButton kaikkiNappi;
+    @FXML private TextField hakukentta;
     
-    private Rallit rallit;
-    private Osallistujat osallistujat;
-    private Ajat ajat;
-    private Erikoiskokeet erikoiskokeet;
+    private Rekisteri rekisteri;
     
-    @FXML
-    void kuskiValittu() {
+    /**
+     * Kutsutaan, kun osallistujien listaa klikataan
+     */
+    @FXML void kuskiValittu() {
+    	naytaOsallTiedot();
+    }
+    
+    /**
+     * Kutsutaan, kun rallilistaa klikataan
+     */
+    @FXML void ralliValittu() {
+    	naytaErikoiskokeet();
+    }
+
+    /**
+     * Kutsutaan, kun erikoiskoelistaa klikataan
+     */
+    @FXML void ekValittu() {
+    	naytaOsallistujat();
+    }
+
+    /**
+     * Kutsutaan, kun Erikoiskokeen "lisää" nappia painetaan
+     */
+    @FXML void lisaaEk() {
+    	if (listViewRalli.getSelectionModel().getSelectedItem() != null) {
+    		Erikoiskoe ek = ModalController.<Erikoiskoe, MuokkaaEkController>showModal(this.getClass().getResource("MuokkaaErikoiskoeView.fxml"), 
+    																				  "Lisää Erikoiskoe", null, null,
+    																				   ctrl -> ctrl.setRalli(listViewRalli.getSelectionModel().getSelectedItem()));
+    		if (ek != null) rekisteri.lisaaErikoiskoe(ek);
+    		naytaErikoiskokeet();
+    	}
+    }
+    
+    /**
+     * Kutsutaan, kun osallistujalistan "lisää" nappia painetaan
+     */
+    @FXML void lisaaKuski() {	
+    	if (listViewEk.getSelectionModel().getSelectedItem() != null) {
+    		Aika aika = ModalController.<Aika, LisaaOsallController>showModal(this.getClass().getResource("LisaaOsallistujaView.fxml"), 
+    																		"Lisää Osallistuja", null, null, 
+    																		ctrl -> ctrl.setRekisteriJaEk(rekisteri, listViewEk.getSelectionModel().getSelectedItem()));
+    		if (aika != null) rekisteri.lisaaAika(aika);
+    		naytaOsallistujat();
+    	}
+    }
+    
+    /**
+     * Kutsutaan, kun osallistujalistan "uusi" nappia painetaan
+     */
+    @FXML void lisaaUusiKuski() {
+    	Osallistuja uusi = ModalController.<Osallistuja>showModal(this.getClass().getResource("MuokkaaOsallistujaaView.fxml"), "Lisää Uusi Osallistuja", null, null);
+    	if (uusi != null) rekisteri.lisaaOsallistuja(uusi);
+    	naytaOsallistujat();
+    }
+    
+    /**
+     * Kutsutaan, kun rallilistan "lisää" nappia painetaan
+     */
+    @FXML void lisaaRalli() {
+    	Ralli ralli = ModalController.<Ralli>showModal(this.getClass().getResource("MuokkaaRalliaView.fxml"), "Lisää Ralli", null, null);
+    	if (ralli != null) rekisteri.lisaaRalli(ralli);
+    	naytaRallit();
+    }
+    
+    /**
+     * Kutsutaan, kun osallistujalistan "muokkaa" nappia painetaan
+     */
+    @FXML void muokkaaKuskia() {
+    	Osallistuja muokattava = tableviewkuski.getSelectionModel().getSelectedItem();
+    	if (muokattava != null) {
+    		Osallistuja uusi = ModalController.<Osallistuja>showModal(this.getClass().getResource("MuokkaaOsallistujaaView.fxml"), "Muokkaa Osallistujaa", null, muokattava);
+        	if (uusi != null) rekisteri.muokkaaOsallistuja(muokattava, uusi);
+        	naytaOsallistujat();
+    	}
+    	
+    }
+
+    /**
+     * Kutsutaan, kun rallilistan "muokkaa" nappia painetaan
+     */
+    @FXML void muokkaaRalli() {
+    	Ralli muokattava = listViewRalli.getSelectionModel().getSelectedItem();
+    	if (muokattava != null) {
+    		Ralli ralli = ModalController.<Ralli>showModal(this.getClass().getResource("MuokkaaRalliaView.fxml"), "Muokkaa Rallia", null, muokattava);
+        	if (ralli != null) rekisteri.muokkaaRalli(muokattava, ralli);
+        	naytaRallit();
+    	}
+    }
+    
+    /**
+     * Kutsutaan, kun erikoiskoelistan "muokkaa" nappia painetaan
+     */
+    @FXML void muokkaaEk() {
+    	Erikoiskoe muokattava = listViewEk.getSelectionModel().getSelectedItem();
+    	if (muokattava != null) {
+    		Erikoiskoe ek = ModalController.<Erikoiskoe, MuokkaaEkController>showModal(this.getClass().getResource("MuokkaaErikoiskoeView.fxml"), 
+    																				  "Muokkaa Erikoiskoetta", null, muokattava,
+    																				   ctrl -> ctrl.setRalli(listViewRalli.getSelectionModel().getSelectedItem()));
+    		if (ek != null) rekisteri.muokkaaErikoiskoe(muokattava, ek);
+    		naytaErikoiskokeet();
+    	}
+    }
+
+    /**
+     * Kutsutaan, kun osallistujalistan "poista" nappia painetaan
+     */
+    @FXML void poistaKuski() {
+    	Osallistuja osall = tableviewkuski.getSelectionModel().getSelectedItem();
+    	if (osall != null) {
+    		if (kaikkiNappi.isSelected()) {
+    			if (Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa osallistujan " + osall.getNimi(), "Kyllä", "Ei")) {
+    				rekisteri.poistaOsallistuja(osall);
+    				
+    			}
+    		} else {
+    			Erikoiskoe ek = listViewEk.getSelectionModel().getSelectedItem();
+    			if (ek != null && Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa osallistujan " + osall.getNimi() +
+    											" ajan erikoiskokeella " + ek.getNimi(), "Kyllä", "Ei")) {
+        			rekisteri.poistaAika(osall, ek);
+    			}
+    		}
+    		naytaOsallistujat();
+    	}
+    }
+
+    /**
+     * Kutsutaan, kun rallilistan "poista" nappia painetaan
+     */
+    @FXML void poistaRalli() {
+    	Ralli poistettava = listViewRalli.getSelectionModel().getSelectedItem();
+    	if (poistettava != null) {
+    		if (Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa rallin " + poistettava.getNimi(), "Kyllä", "Ei")) {
+    			rekisteri.poistaRalli(poistettava);
+    			naytaRallit();
+    			naytaErikoiskokeet();
+    		}
+    	}
+    }
+    
+    /**
+     * Kutsutaan kun erikoiskoelistan "poista" nappia painetaan
+     */
+    @FXML void poistaEk() {
+    	Erikoiskoe ek = listViewEk.getSelectionModel().getSelectedItem();
+    	if (ek != null) {
+    		if (Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa erikoiskokeen " + ek.getNimi(), "Kyllä", "Ei")) {
+    			rekisteri.poistaEk(ek);
+    		}
+    		naytaErikoiskokeet();
+    	}
+    }
+    
+    /**
+     * Kutsutaan, kun "kaikki" nappia painetaan
+     */
+    @FXML void kaikkiNappiPainettu() {
+    	naytaOsallistujat();
+    }
+    
+    /**
+     * Kutsutaan kun "lataa uudelleen" nappia painetaan
+     */
+    @FXML void handleReload() {
+    	if (Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti ladata tiedot uudelleen? Menetät kaikki muutokset.", "Kyllä", "Ei")) {
+    		rekisteri = new Rekisteri();
+    		rekisteri.lueTiedostosta();
+        	naytaRallit();
+        	naytaErikoiskokeet();
+        	naytaOsallistujat();
+    	}
+    }
+
+    /**
+     * Kutsutaan kun "tallenna" nappia painetaan
+     */
+    @FXML void handleTallenna() {
+    	if (Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti tallentaa?", "Kyllä", "Ei")) {
+    		rekisteri.tallenna();
+    	}
+    }
+    
+    /**
+     * Kutsutaan kun hakukenttää klikataan
+     */
+    @FXML void kenttaklikattu() {
+    	if (hakukentta.getText().equals("Hae...")) hakukentta.setText("");
+    }
+    
+    /**
+     * Hakee rekisteristä hakukenttään kirjoitettua
+     * tekstiä vastaavat osallistujat ja 
+     * asettaa ne listaan
+     * @param hakusana hakukenttään kirjoitettu teksti
+     */
+    private void osallHaku(String hakusana) {
+    	if (kaikkiNappi.isSelected()) tableviewkuski.setItems(rekisteri.haeOsall(hakusana, null));
+    	else if (listViewEk.getSelectionModel().getSelectedItem() != null) tableviewkuski.setItems(rekisteri.haeOsall(hakusana, listViewEk.getSelectionModel().getSelectedItem()));
+    }
+    
+    /**
+     * Asettaa rallilistaan rallit
+     */
+    private void naytaRallit() {
+    	listViewRalli.setItems(rekisteri.getRallit());
+    }
+    
+    /**
+     * Asettaa Erikoiskoelistaan erikoiskokeet
+     */
+    private void naytaErikoiskokeet() {
+    	Ralli ralli = listViewRalli.getSelectionModel().getSelectedItem();
+    	if (ralli != null) {
+    		listViewEk.setItems(rekisteri.getErikoiskokeet(ralli));
+    	} else {
+    		listViewEk.setItems(null);
+    	}
+    	
+    }
+    
+    /**
+     * Asettaa osallistujalistaan osallistujat
+     */
+    private void naytaOsallistujat() {
+    	if (kaikkiNappi.isSelected()) {
+    		tableviewkuski.setItems(rekisteri.getOsallistujat());
+    	} else {
+    		Erikoiskoe ek = listViewEk.getSelectionModel().getSelectedItem();
+    		if (ek != null) tableviewkuski.setItems(rekisteri.getOsallistujat(ek));
+    		else tableviewkuski.setItems(null);
+    	}
+    }
+    
+    /**
+     * Asettaa osallistujan tietokenttiin osallistujan tiedot
+     */
+    private void naytaOsallTiedot() {
+    	
+    	kuskiNimiField.setText("");
+        kartturiNimiField.setText("");
+        kuskiTalliField.setText("");
+        kuskiAutoField.setText("");
+    	
     	Osallistuja osall = tableviewkuski.getSelectionModel().getSelectedItem(); 
     	
     	if (osall != null) {
@@ -35,100 +281,25 @@ public class RallitietokantaGUIController {
         	kartturiNimiField.setText(osall.getKartturi());
         	kuskiTalliField.setText(osall.getTalli());
         	kuskiAutoField.setText(osall.getAuto());
-    	}
-    }
-    
-    @FXML
-    void lisaaEk() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaErikoiskoeView.fxml"), "Muokkaa", null, "");
-    }
-    
-    @FXML
-    void lisaaKuski() {
-    	ModalController.showModal(this.getClass().getResource("LisaaOsallistujaView.fxml"), "Muokkaa", null, "");
-    }
-    
-    @FXML
-    void lisaaUusiKuski() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaOsallistujaaView.fxml"), "Muokkaa", null, "");
-    }
-    
-    @FXML
-    void lisaaRalli() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaRalliaView.fxml"), "Muokkaa", null, "");
-    }
-    
-    @FXML
-    void muokkaaKuskia() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaOsallistujaaView.fxml"), "Muokkaa", null, "");
+    	} 
     }
 
-    @FXML
-    void muokkaaRalli() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaRalliaView.fxml"), "Muokkaa", null, "");
-    }
-    
-    @FXML
-    void muokkaaEk() {
-    	ModalController.showModal(this.getClass().getResource("MuokkaaErikoiskoeView.fxml"), "Muokkaa", null, "");
-    }
-
-    @FXML
-    void poistaKuski() {
-    	if (tableviewkuski.getSelectionModel().getSelectedItem() != null) Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa osallistujan " + tableviewkuski.getSelectionModel().getSelectedItem().getNimi(), "Kyllä", "Ei");
-    }
-
-    @FXML
-    void poistaRalli() {
-    	if (listViewRalli.getSelectionModel().getSelectedItem() != null) Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa rallin " + listViewRalli.getSelectionModel().getSelectedItem().getNimi(), "Kyllä", "Ei");
-    }
-    
-    @FXML
-    void poistaEk() {
-    	if (listViewEk.getSelectionModel().getSelectedItem() != null) Dialogs.showQuestionDialog("Oletko varma?", "Haluatko varmasti poistaa erikoiskokeen " + listViewEk.getSelectionModel().getSelectedItem().getNimi(), "Kyllä", "Ei");
-    }
-
-    @FXML 
-    void initialize() {
-        assert tableviewkuski != null : "fx:id=\"tableviewkuski\" was not injected: check your FXML file 'RallitietokantaGUIView.fxml'.";
+    /**
+     * Kutsutaan, kun sovellus käynnistyy
+     */
+    @FXML void initialize() {
         
-        rallit = new Rallit();
-        erikoiskokeet = new Erikoiskokeet();
+        rekisteri = new Rekisteri();
+        rekisteri.lueTiedostosta();
         
+        tableCKuskiId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tableCKuskiNimi.setCellValueFactory(new PropertyValueFactory<>("nimi"));
         tableCKuskiTalli.setCellValueFactory(new PropertyValueFactory<>("talli"));
         tableCKuskiAika.setCellValueFactory(new PropertyValueFactory<>("aika"));
-
         
-         // KOKEILUA
+        hakukentta.textProperty().addListener(tp -> osallHaku(((StringProperty)tp).get()));
         
-        
-        for (int i = 0; i < 30; i++) {
-        	double rand = Math.random();
-        	
-        	Osallistuja kuskil;
-        	
-        	if(rand > 0.5) {
-        		kuskil = new Osallistuja("Erkki", "Esimerkki", "VRCF", "Volvo 240", "Kari", "Kartturi");
-        	} else {
-        		kuskil = new Osallistuja("Matti", "Meikäpoika", "Lekaharkko Per.CC Racing", "Saab 96", "Veikko", "Lukija");
-        	} 
-        	kuskil.setAika(new Aika((int)(Math.random()*6000000)));
-        	
-        	tableviewkuski.getItems().add(kuskil);
-        }
-        
-        for (int i = 0; i < 50; i++) {
-        	Erikoiskoe ek = new Erikoiskoe("Ek " + i);
-        	erikoiskokeet.lisaa(ek);
-        }
-        
-        for (int i = 0; i < 15; i++) {
-        	Ralli ralli = new Ralli("Ralli " + i, "");
-        	rallit.lisaa(ralli);
-        }
-        
-        Arrays.asList(rallit.getKaikki()).forEach(r -> listViewRalli.getItems().add(r));
-        Arrays.asList(erikoiskokeet.getKaikki()).forEach(ek -> listViewEk.getItems().add(ek));
+        naytaRallit();
+        naytaOsallistujat();
     }
 }
