@@ -28,11 +28,19 @@ public class MuokkaaEkController implements ModalControllerInterface<Erikoiskoe>
      * Kutsukaan, kun ok nappia painetaan
      */
     @FXML void handleOk() {
-    	try {
-    		ek = new Erikoiskoe(0, ralli.getId(), nimiField.getText(), Double.parseDouble(pituusField.getText()), pPicker.getValue());
-    		ModalController.closeStage(nimiField);
-    	} catch(NumberFormatException excp) {
-    		Dialogs.showMessageDialog("Kirjoita pituus muotoon 0.00");
+    	if (!nimiField.getText().contains("|")) {
+    		if (pPicker.getValue() != null) {
+    			try {
+    				ek = new Erikoiskoe(0, ralli.getId(), nimiField.getText(), Double.parseDouble(pituusField.getText()), pPicker.getValue());
+    				ModalController.closeStage(nimiField);
+    			} catch(NumberFormatException excp) {
+    				Dialogs.showMessageDialog("Kirjoita pituus muotoon 0.00");
+    			}
+    		} else {
+    			Dialogs.showMessageDialog("Anna päivämäärä");
+    		}
+    	} else {
+    		Dialogs.showMessageDialog("Älä käytä \"|\"-merkkiä");
     	}
     }
 

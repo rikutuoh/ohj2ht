@@ -1,5 +1,6 @@
 package RTKfx;
 
+import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
@@ -36,10 +37,16 @@ public class MuokkaaOsallController implements ModalControllerInterface<Osallist
      * Kutsutaan kun ok nappia painetaan
      */
     @FXML void handleOk() {
-    	palau = new Osallistuja(0, kuskiSukuField.getText(), kuskiEtuField.getText(), kuskiKansField.getText(), 
-    			kartturiSukuField.getText(), kartturiEtuField.getText(), kartturiKansField.getText(), 
-    			autoField.getText(), talliField.getText());
-    	ModalController.closeStage(kuskiEtuField);
+    	if (!kuskiSukuField.getText().contains("|") && !kuskiEtuField.getText().contains("|") && !kuskiKansField.getText().contains("|") && 
+    		!kartturiSukuField.getText().contains("|") && !kartturiEtuField.getText().contains("|") && !kartturiKansField.getText().contains("|") &&
+    		!talliField.getText().contains("|") && !autoField.getText().contains("|")) {
+    		palau = new Osallistuja(0, kuskiSukuField.getText(), kuskiEtuField.getText(), kuskiKansField.getText(), 
+    				kartturiSukuField.getText(), kartturiEtuField.getText(), kartturiKansField.getText(), 
+    				autoField.getText(), talliField.getText());
+    		ModalController.closeStage(kuskiEtuField);
+    	} else {
+    		Dialogs.showMessageDialog("Älä käytä \"|\"-merkkiä");
+    	}
     }
 
     /**

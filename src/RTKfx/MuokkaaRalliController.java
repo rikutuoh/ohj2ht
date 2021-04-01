@@ -1,5 +1,6 @@
 package RTKfx;
 
+import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
@@ -25,8 +26,17 @@ public class MuokkaaRalliController implements ModalControllerInterface<Ralli> {
      * Kutsutaan, kun ok nappia painetaan
      */
     @FXML void handleOk() {
-    	ralli = new Ralli(0, nimiField.getText(), paikkaField.getText(), alkuPPicker.getValue(), loppuPPicker.getValue());
-    	ModalController.closeStage(nimiField);
+    	if (!nimiField.getText().contains("|") && !paikkaField.getText().contains("|")) {
+    		if (alkuPPicker.getValue() != null && loppuPPicker.getValue() != null) {
+    			ralli = new Ralli(0, nimiField.getText(), paikkaField.getText(), alkuPPicker.getValue(), loppuPPicker.getValue());
+    			ModalController.closeStage(nimiField);
+    		} else {
+    			Dialogs.showMessageDialog("Anna päivämäärä");
+    		}
+    	} else {
+    		Dialogs.showMessageDialog("Älä käytä \"|\"-merkkiä");
+    	}
+    	
     }
 
     /**

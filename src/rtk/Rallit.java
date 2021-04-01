@@ -17,17 +17,15 @@ import javafx.collections.ObservableList;
 public class Rallit {
 	
 	private static final String FILEPATH = ".\\src\\data\\rallit.dat";
-	private Ralli[] rallit;
-	private int lkm, maxLkm, viimId;
+	private ObservableList<Ralli> rallit;
+	private int viimId;
 	
 	/**
 	 * Muodostaja, alustaa
 	 * taulukon lkm ja maxLkm
 	 */
 	public Rallit() {
-		lkm = 0;
-		maxLkm = 10;
-		rallit = new Ralli[maxLkm];
+		rallit = FXCollections.observableArrayList();
 	}
 	
 	/**
@@ -39,9 +37,8 @@ public class Rallit {
 	 */
 	public void muokkaa(Ralli muokattava, Ralli uusi) {
 		uusi.setId(muokattava.getId());
-		for (int i = 0; i < lkm; i++) {
-			if (rallit[i].getId() == muokattava.getId()) rallit[i] = uusi;
-		}
+		if(rallit.remove(muokattava))
+			rallit.add(uusi);
 	}
 	
 	/**
@@ -49,10 +46,8 @@ public class Rallit {
 	 * @param ralli lisättävä
 	 */
 	public void lisaa(Ralli ralli) {
-		if ( lkm + 2 > maxLkm ) lisaaTilaa();
-		rallit[lkm] = ralli;
+		rallit.add(ralli);
 		viimId = ralli.getId();
-		lkm++;
 	}
 	
 	/**
@@ -64,42 +59,12 @@ public class Rallit {
 		lisaa(ralli);
 	}
 	
+	/**
+	 * Poistaa rallin
+	 * @param ralli poistettava
+	 */
 	public void poista(Ralli ralli) {
-		for (int i = 0; i < lkm; i++) {
-			if (rallit[i] != null && rallit[i].getId() == ralli.getId()) {
-				rallit[i] = null;
-				return;
-			}
-		}
-	}
-	
-	
-	/**
-	 * Palauttaa taulukon kaikista ralleista
-	 * @return taulukko
-	 */
-	public Ralli[] getKaikki() {
-		return rallit;
-	}
-	
-	/**
-	 * Palauttaa rallien lukumäärän
-	 * @return lkms
-	 */
-	public int getLkm() {
-		return lkm;
-	}
-	
-	/**
-	 * Lisää tilaa taulukkoon
-	 */
-	private void lisaaTilaa() {
-		Ralli[] vanha = rallit;
-		rallit = new Ralli[maxLkm + 10];
-		maxLkm += 10; 
-		for (int i = 0; i < lkm; i++) {
-			rallit[i] = vanha[i];
-		}
+		rallit.remove(ralli);
 	}
 	
 	/**
@@ -107,28 +72,19 @@ public class Rallit {
 	 * @return Lista
 	 */
 	public ObservableList<Ralli> getLista() {
-		
-		ObservableList<Ralli> lista = FXCollections.observableArrayList();
-		
-		for (int i = 0; i < lkm; i++) {
-			if (rallit[i] != null) {
-				lista.add(rallit[i]);
-			}
-		}
-		
-		return lista;
+		return rallit;
 	}
 	
 	/**
 	 * Tallentaa tiedot tiedostoon
 	 */
 	public void tallenna() {
-		
+		rallit.sort((r1, r2) -> r1.getId() - r2.getId());
 		try {
 			FileWriter fw = new FileWriter(FILEPATH + "_temp.dat");
 			fw.write(";id|Nimi                    |Paikka         |Alkupvm    |Loppupvm   |\n");
-			for (int i = 0; i < lkm; i++) {
-				if (rallit[i] != null) fw.write(rallit[i].tiedostomuotoon() + "\n");
+			for (Ralli ralli : rallit) {
+				if (ralli != null) fw.write(ralli.tiedostomuotoon() + "\n");
 			}
 			fw.close();
 			fw = new FileWriter(FILEPATH);
