@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Osallistujat-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 23.3.2021
  */
 public class Osallistujat {

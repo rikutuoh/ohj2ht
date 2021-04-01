@@ -14,7 +14,7 @@ import rtk.Rekisteri;
 
 /**
  * Osallistujanlisäysikkunan ohjainluokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 30.3.2021
  */
 public class LisaaOsallController implements ModalControllerInterface<Aika> {

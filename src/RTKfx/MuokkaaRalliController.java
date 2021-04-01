@@ -10,7 +10,7 @@ import rtk.Ralli;
 
 /**
  * Rallin muokkausikkunan ohjainluokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 30.3.2021
  */
 public class MuokkaaRalliController implements ModalControllerInterface<Ralli> {

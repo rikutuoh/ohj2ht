@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Erikoiskokeet-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 23.3.2021
  */
 public class Erikoiskokeet {
@@ -74,6 +74,16 @@ public class Erikoiskokeet {
 		}
 	}
 	
+	/**
+	 * Poistaa kaikki tiettyyn ralliin kuuluvat erikoiskokeet
+	 * @param poistettava ralli jonka poistetaan
+	 */
+	public void poistaKaikki(Ralli poistettava) {
+		for (int i = 0; i < lkm; i++) {
+			if (erikoiskokeet[i] != null && erikoiskokeet[i].getRalliId() == poistettava.getId()) erikoiskokeet[i] = null; 
+		}	
+	}
+
 	/**
 	 * palauttaa kaikki erikoiskokeet
 	 * @return taulukko kaikista erikoiskokeista

@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * Ohjelman pääluokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 2.2.2021
  */
 public class RallitietokantaMain extends Application {

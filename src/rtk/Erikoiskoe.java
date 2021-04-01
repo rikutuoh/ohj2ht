@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  * Erikoiskoe-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 23.3.2021
  */
 

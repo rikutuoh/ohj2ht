@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  * Ralli-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 23.3.2021
  */
 public class Ralli {

@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Ajat-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 29.3.2021
  */
 public class Ajat {

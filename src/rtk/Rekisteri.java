@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Rekisteri-luokka
- * @author rikut
+ * @author Riku Tuohimetsä
  * @version 29.3.2021
  */
 public class Rekisteri {
@@ -130,6 +130,7 @@ public class Rekisteri {
 	 * @param poistettava poistettava
 	 */
 	public void poistaRalli(Ralli poistettava) {
+		ekt.poistaKaikki(poistettava);
 		rallit.poista(poistettava);
 	}
 	
