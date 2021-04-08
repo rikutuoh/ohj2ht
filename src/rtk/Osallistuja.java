@@ -43,6 +43,18 @@ public class Osallistuja {
 	}
 	
 	/**
+	 * Muodostaja osallistujalle, missä annetaan vain id ja nimi, testeihin
+	 * @param id Osallistujan id
+	 * @param sukunimi Kuskin sukunimi 
+	 * @param etunimi Kuskin etunimi
+	 */
+	public Osallistuja(int id, String sukunimi, String etunimi) {
+		this.id = id; this.sukunimi = sukunimi; this.etunimi = etunimi; this.kans = ""; 
+		this.kartsukunimi = ""; this.kartetunimi = ""; this.kartKans = ""; 
+		this.auto = ""; this.talli = "";
+	}
+	
+	/**
 	 * Palauttaa osallistujan id:n
 	 * @return id
 	 */

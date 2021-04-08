@@ -1,4 +1,4 @@
-package RTKfx;
+package rtkfx;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

@@ -1,4 +1,4 @@
-package RTKfx;
+package rtkfx;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;

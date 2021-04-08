@@ -19,7 +19,7 @@ public class Ralli {
 	 * @param paik Paikka
 	 */
 	public Ralli(String nimi, String paikka) {
-		this.nimi = nimi; this.paikka = paikka;
+		this.nimi = nimi; this.paikka = paikka; this.alkuPvm = LocalDate.EPOCH; this.loppuPvm = LocalDate.EPOCH;
 	}
 	
 	/**

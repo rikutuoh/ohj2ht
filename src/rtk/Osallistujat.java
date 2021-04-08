@@ -13,6 +13,23 @@ import javafx.collections.ObservableList;
  * Osallistujat-luokka
  * @author Riku Tuohimetsä
  * @version 23.3.2021
+ * <pre name="test">
+ * #import java.util.Arrays;
+ * Osallistujat osallistujat = new Osallistujat();
+ *  Osallistuja osall1 = new Osallistuja(1, "Osal1", "Listuja1");
+ *  Osallistuja osall2 = new Osallistuja(2, "Osal2", "Listuja2");
+ *  Osallistuja osall3 = new Osallistuja(3, "Osal3", "Listuja3");
+ *  Osallistuja osall4 = new Osallistuja(4, "Osal4", "Listuja4");
+ *  Osallistuja osall5 = new Osallistuja(5, "Osal5", "Listuja5");
+ * osallistujat.lisaa(osall1); osallistujat.lisaa(osall2); osallistujat.lisaa(osall3); osallistujat.lisaa(osall4); osallistujat.lisaa(osall5);
+ * Arrays.toString(osallistujat.getLista().toArray()) === "[Osal1 Listuja1, Osal2 Listuja2, Osal3 Listuja3, Osal4 Listuja4, Osal5 Listuja5]";
+ * osallistujat.muokkaa(osall1, new Osallistuja(0, "Osal1Uus", "Listuja1Uus"));
+ * Arrays.toString(osallistujat.getLista().toArray()) === "[Osal1Uus Listuja1Uus, Osal2 Listuja2, Osal3 Listuja3, Osal4 Listuja4, Osal5 Listuja5]";
+ * osallistujat.muokkaa(osall1, null);
+ * Arrays.toString(osallistujat.getLista().toArray()) === "[Osal1Uus Listuja1Uus, Osal2 Listuja2, Osal3 Listuja3, Osal4 Listuja4, Osal5 Listuja5]";
+ * osallistujat.poista(osall1);
+ * Arrays.toString(osallistujat.getLista().toArray()) === "[Osal2 Listuja2, Osal3 Listuja3, Osal4 Listuja4, Osal5 Listuja5]";
+ * </pre>
  */
 public class Osallistujat {
 	private static final String FILEPATH = ".\\src\\data\\osallistujat.dat";
@@ -35,6 +52,9 @@ public class Osallistujat {
 	 * @param Osallistuja lisättävä
 	 */
 	public void lisaa(Osallistuja osallistuja) {
+		for (int i = 0; i < lkm; i++) {
+			if (osallistujat[i] != null && osallistujat[i].getId() == osallistuja.getId()) return;
+		}
 		if ( lkm + 2 > maxLkm ) lisaaTilaa();
 		osallistujat[lkm] = osallistuja;
 		viimId = osallistuja.getId();
@@ -58,6 +78,7 @@ public class Osallistujat {
 	 * @param uusi uusi
 	 */
 	public void muokkaa(Osallistuja muokattava, Osallistuja uusi) {
+		if (muokattava == null || uusi == null) return;
 		uusi.setId(muokattava.getId());
 		for (int i = 0; i < lkm; i++) {
 			if (osallistujat[i].getId() == muokattava.getId()) osallistujat[i] = uusi;
@@ -178,24 +199,19 @@ public class Osallistujat {
 	 * Lukee ja luo oliot tiedostosta
 	 */
 	public void lueTiedostosta() {
-		
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(FILEPATH));
 			String rivi;
-			
 			while ((rivi = br.readLine()) != null) {
 				if(!rivi.startsWith(";")) {
 					this.lisaa(Osallistuja.parseToOsallistuja(rivi));
 				}
 			}
 			br.close();
-		
 		} catch (FileNotFoundException e) {
 			System.err.println("Virhe: "+e.getLocalizedMessage());
 		} catch (IOException e) {
 			System.err.println("Virhe: "+e.getLocalizedMessage());
 		} 
 	}
-
-
 }

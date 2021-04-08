@@ -34,7 +34,9 @@ public class Aika {
 	 * @param aika Aika millisekunteina
 	 */
 	public Aika(int id, int ekId, int osId, int aika) {
-		this.id = id; this.ekId = ekId; this.osId = osId; this.value = aika;
+		this.id = id; this.ekId = ekId; this.osId = osId; 
+		if (aika >= 0) this.value = aika;
+		else this.value = 0;
 	}
 	
 	/**

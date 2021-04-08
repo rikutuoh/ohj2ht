@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="442.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RTKfx.MuokkaaOsallController">
+<BorderPane prefHeight="442.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rtkfx.MuokkaaOsallController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <BorderPane.margin>
